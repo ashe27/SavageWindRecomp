@@ -1726,6 +1726,8 @@ static void cheats_options(void) {
     opt_toggle("Free sprint out of combat", &g_settings.free_sprint, false,
                "Sprinting takes no stamina while no enemy is fighting you. Once the battle music starts, sprinting "
                "costs stamina again.");
+    opt_toggle("Runes no cooldown", &g_settings.rune_no_cd, false,
+               "The Sheikah Slate's runes (the bombs and stasis) can be used again at once, with no recharge.");
     {   // the four champion abilities: a row that opens to their four switches
         static bool open = false;
         if (opt_action("Unlock champion abilities", open ? "-" : "+",

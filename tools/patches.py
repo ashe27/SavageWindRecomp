@@ -931,6 +931,28 @@ def _silent_link(gen, a):
             f'  /* {a:#x}: sub w9, w1, #1 (the noise setter: (object, channel, value)) */')
 
 
+def _rune_no_cd_bomb(gen, a):
+    # Using a bomb resets the rune cooldown timer (the pair of floats at +0x80) to zero, and that is what starts the
+    # cooldown; the timer counts up to its duration again. With the option on the two floats are set past any duration
+    # instead, so the timer reads as finished: the bomb is usable at once, also on a new game where it starts at zero
+    # (runtime/assists.c rt_rune_no_cd).
+    assert _word(gen, a) == 0xf900001f, hex(_word(gen, a))  # str xzr, [x0]
+    return ('{ extern int rt_rune_no_cd(void); '
+            'if (rt_rune_no_cd()) { ST32(c->x[0], 0x7f7fffffu); ST32(c->x[0] + 4, 0x7f7fffffu); } '
+            'else { uint64_t ea = c->x[0] + 0x0ull; ST64(ea, 0ull); } }'
+            f'  /* {a:#x}: str xzr, [x0] (rune cooldown reset: the bombs) */')
+
+
+def _rune_no_cd_stasis(gen, a):
+    # The stasis rune's cooldown timer is at +0x144, reached as the +0x100 sub-object's +0x44 (x19 + 0x100 + 0x44);
+    # using stasis writes the value that starts its cooldown there. With the option on the store is skipped, so the
+    # timer stays at zero, which is what makes the rune usable (runtime/assists.c rt_rune_no_cd).
+    assert _word(gen, a) == 0xbd004660, hex(_word(gen, a))  # str s0, [x19, #0x44]
+    return ('{ extern int rt_rune_no_cd(void); '
+            'if (!rt_rune_no_cd()) { uint64_t ea = c->x[19] + 0x44ull; ST32(ea, VS32(0)); } }'
+            f'  /* {a:#x}: str s0, [x19, #0x44] (rune cooldown reset: stasis) */')
+
+
 def _cam_pitch(gen, a):
     # fmul s1, s0, s0 just above, fnmul s3, s0, s0 here: the vertical part kept its sign squared, s1 or s3 by s0's sign
     assert _word(gen, a) == 0x1e208803 and _word(gen, a - 4) == 0x1e200801, hex(_word(gen, a))
@@ -1564,6 +1586,8 @@ PATCHES = {
     'hero_soul_electric': _hero_soul_electric,
     'hero_soul_fire': _hero_soul_fire,
     'hero_soul_water': _hero_soul_water,
+    'rune_no_cd_bomb': _rune_no_cd_bomb,
+    'rune_no_cd_stasis': _rune_no_cd_stasis,
     'ui_layout_draw': _ui_layout_draw,
     'ui_layout_pane': _ui_layout_pane,
     'replace_tick_call': _replace_tick_call,

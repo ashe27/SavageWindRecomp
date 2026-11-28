@@ -698,6 +698,7 @@ void settings_load(void) {
         else if (!strcmp(key, "hero_soul_electric")) g_settings.hero_soul_electric = atoi(val) != 0;
         else if (!strcmp(key, "hero_soul_fire")) g_settings.hero_soul_fire = atoi(val) != 0;
         else if (!strcmp(key, "hero_soul_water")) g_settings.hero_soul_water = atoi(val) != 0;
+        else if (!strcmp(key, "rune_no_cd")) g_settings.rune_no_cd = atoi(val) != 0;
         else if (!strcmp(key, "damage_taken")) g_settings.damage_taken = atoi(val);  // (percent)
         else if (!strcmp(key, "damage_dealt")) g_settings.damage_dealt = atoi(val);
         else if (!strcmp(key, "toggle_zl")) g_settings.toggle_zl = atoi(val) != 0;
@@ -1023,6 +1024,7 @@ bool settings_save_to(const char *path) {
     fprintf(f, "hero_soul_electric = %d\n", g_settings.hero_soul_electric);
     fprintf(f, "hero_soul_fire = %d\n", g_settings.hero_soul_fire);
     fprintf(f, "hero_soul_water = %d\n", g_settings.hero_soul_water);
+    fprintf(f, "rune_no_cd = %d\n", g_settings.rune_no_cd);
     fprintf(f, "damage_taken = %d\n", g_settings.damage_taken);
     fprintf(f, "damage_dealt = %d\n", g_settings.damage_dealt);
     fprintf(f, "toggle_zl = %d\n", g_settings.toggle_zl ? 1 : 0);

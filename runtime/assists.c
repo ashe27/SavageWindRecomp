@@ -96,6 +96,11 @@ int rt_hero_soul(int which) {
     return 0;
 }
 
+// Rune skills without cooldown (tools/patches.py _rune_no_cd_bomb / _rune_no_cd_stasis): using a rune writes its
+// cooldown timer, and that write is what starts the cooldown. With the option on the bomb timer is written past its
+// range instead, so it reads as finished from the first use, and the stasis write is skipped.
+int rt_rune_no_cd(void) { return g_settings.rune_no_cd; }
+
 // The map's completion rate (tools/patches.py _map_clear_rate): the map screen asks the game whether the save has the
 // GameClear flag and hides its rate block when the answer is no. With the option on the answer is 1, so the rate shows
 // before the game is cleared.

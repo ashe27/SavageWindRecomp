@@ -288,6 +288,12 @@ SITES = [
          'd0008469/9f00001f f9420d08/ffc003ff 39400108/ffc003ff f944c929/ffc003ff 39400129/ffc003ff 7100011f '
          '7a400920 540000c1/ff00001f 2a1f03e0 940175b3/fc000000 2a0003e8 2a1f03e0 36000088/ff00001f '
          'f9400bf3/ffc003ff a8c27bfd d65f03c0 94069c38/fc000000', 0),
+    # Rune skills without cooldown (tools/patches.py _rune_no_cd_bomb / _rune_no_cd_stasis; runtime/assists.c
+    # rt_rune_no_cd): using a rune resets its cooldown timer to zero, and that reset is what starts the cooldown. With
+    # the option on the two stores below are skipped, so the timer keeps the value that made the rune usable: the bombs'
+    # timer (the pair of floats at +0x80) and the stasis timer (+0x144, through the +0x100 sub-object's +0x44).
+    Site('rune_no_cd_bomb', 'code', 'f900001f 1e210801 1a9f17e8 39005008 bd000c01 d65f03c0', 0),
+    Site('rune_no_cd_stasis', 'code', 'bd004660 94000000/fc000000 14000000/fc000000 2f00e402 14000000/fc000000', 0),
 
     # the mouse camera (tools/patches.py _cam_stick, _cam_pitch, _cam_pitch_aim; runtime/hle/input.c): the camera's
     # stick input, which every camera action reads, and the square that the chase-like cameras apply to its vertical
@@ -911,6 +917,8 @@ KNOWN = {
         'hero_soul_electric': 0x7000cd94a4,
         'hero_soul_fire': 0x7000cd9428,
         'hero_soul_water': 0x7000cd9520,
+        'rune_no_cd_bomb': 0x7000e70e68,
+        'rune_no_cd_stasis': 0x7000b3d300,
         'cam_stick': 0x7000d57fe0,
         'cam_stick_end': 0x7000d5801c,
         'horse_cam_lr': 0x7000c29000,

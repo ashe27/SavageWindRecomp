@@ -281,6 +281,7 @@ typedef struct {
     bool hero_soul_electric; // Urbosa's Fury, likewise
     bool hero_soul_fire;     // Daruk's Protection, likewise
     bool hero_soul_water;    // Mipha's Grace, likewise
+    bool rune_no_cd;         // Sheikah Slate runes can be used again at once (assists.c rt_rune_no_cd)
     int damage_taken;        // percent of the damage Link takes (DAMAGE_CHOICES)
     int damage_dealt;        // percent of the damage everything else takes (DAMAGE_CHOICES)
     bool toggle_zl;          // press ZL once in play to hold shield / focus; press again to release (hle/input.c)
